@@ -1,0 +1,9 @@
+services:
+  site-empresa:
+    image: nginx:alpine
+    networks:
+      - dmz
+
+networks:
+  dmz:
+    driver: bridge
