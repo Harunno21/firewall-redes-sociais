@@ -22,9 +22,11 @@ services:
       lan:
         ipv4_address: 172.30.10.10
 
-  # Firewall responsavel por controlar o trafego entre redes.
+ # Firewall responsavel por controlar o trafego entre redes.
   firewall:
-    image: alpine:3.22
+    # Constroi a imagem utilizando nosso Dockerfile.
+    build:
+      context: ./firewall
     command: ["sh", "-c", "while true; do sleep 3600; done"]
 
     # Permite administrar regras de firewall e roteamento.
