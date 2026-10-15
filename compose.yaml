@@ -56,6 +56,10 @@ services:
   site-empresa:
     image: nginx:alpine
 
+  # Permite configurar a rota de retorno para a LAN.
+    cap_add:
+      - NET_ADMIN
+      
     # O servidor não participa diretamente da LAN.
     networks:
       dmz:

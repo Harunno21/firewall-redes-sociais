@@ -1,4 +1,3 @@
-
 #!/bin/sh
 
 # Encerra o script caso algum comando apresente erro.
