@@ -7,7 +7,9 @@ services:
 
   # Estacao de trabalho de um funcionario da empresa.
   cliente:
-    image: alpine:3.22
+    # Utiliza nossa imagem personalizada com Curl.
+    build:
+      context: ./cliente
 
     # Define o firewall como gateway padrao do funcionario.
     command:
