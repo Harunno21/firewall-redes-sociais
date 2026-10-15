@@ -59,7 +59,15 @@ services:
   # Permite configurar a rota de retorno para a LAN.
     cap_add:
       - NET_ADMIN
-      
+
+ # Configura a rota de retorno para a LAN e inicia o Nginx.
+    command:
+      - sh
+      - -c
+      - |
+        route add -net 172.30.10.0 netmask 255.255.255.0 gw 172.30.20.2 &&
+        exec nginx -g 'daemon off;'
+
     # O servidor não participa diretamente da LAN.
     networks:
       dmz:
