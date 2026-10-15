@@ -9,13 +9,15 @@ services:
   cliente:
     image: alpine:3.22
 
-    # Encaminha o trafego externo ao firewall da empresa.
+    # Define o firewall como gateway padrao do funcionario.
     command:
       - sh
       - -c
       - |
-        route add default gw 172.30.10.2 &&
+        route del default 2>/dev/null || true
+        route add default gw 172.30.10.2 || exit 1
         while true; do sleep 3600; done
+
 
     # Permite alterar configurações de rede do container.
     # Sera utilizado posteriormente na configuração das rotas.
@@ -65,15 +67,18 @@ services:
     cap_add:
       - NET_ADMIN
 
- # Configura a rota de retorno para a LAN e inicia o Nginx.
+ 
+  # Configura a resposta para a LAN usando o firewall.
     command:
       - sh
       - -c
       - |
-        route add -net 172.30.10.0 netmask 255.255.255.0 gw 172.30.20.2 &&
+        route del default 2>/dev/null || true
+        route add -net 172.30.10.0 netmask 255.255.255.0 gw 172.30.20.2 || exit 1
         exec nginx -g 'daemon off;'
 
-    # O servidor não participa diretamente da LAN.
+
+  # O servidor não participa diretamente da LAN.
     networks:
       dmz:
         ipv4_address: 172.30.20.10
@@ -84,7 +89,6 @@ networks:
   # LAN: rede interna dos funcionarios.
   lan:
     driver: bridge
-    internal: true
     ipam:
       config:
         - subnet: 172.30.10.0/24
@@ -92,7 +96,6 @@ networks:
   # DMZ: rede destinada aos serviços da empresa.
   dmz:
     driver: bridge
-    internal: true
     ipam:
       config:
         - subnet: 172.30.20.0/24
