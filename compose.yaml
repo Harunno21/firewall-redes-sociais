@@ -9,8 +9,13 @@ services:
   cliente:
     image: alpine:3.22
 
-    # Mantem o container em execucao.
-    command: ["sh", "-c", "while true; do sleep 3600; done"]
+    # Encaminha o trafego externo ao firewall da empresa.
+    command:
+      - sh
+      - -c
+      - |
+        route add default gw 172.30.10.2 &&
+        while true; do sleep 3600; done
 
     # Permite alterar configurações de rede do container.
     # Sera utilizado posteriormente na configuração das rotas.
