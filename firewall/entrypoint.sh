@@ -17,3 +17,6 @@ iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 iptables -A FORWARD -s 172.30.10.0/24 -d 172.30.20.10 -p tcp --dport 80 -j ACCEPT
 
 echo "Regras iniciais do firewall configuradas."
+
+
+exec "$@"
