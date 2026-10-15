@@ -21,12 +21,19 @@ services:
     networks:
       lan:
         ipv4_address: 172.30.10.10
-
+ 
+ 
  # Firewall responsavel por controlar o trafego entre redes.
   firewall:
-    # Constroi a imagem utilizando nosso Dockerfile.
+
+    # Constroi a imagem personalizada do firewall.
     build:
       context: ./firewall
+
+    # Executa automaticamente o script com as regras Iptables.
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]
+
+    # Mantem o container funcionando apos aplicar as regras.
     command: ["sh", "-c", "while true; do sleep 3600; done"]
 
     # Permite administrar regras de firewall e roteamento.
